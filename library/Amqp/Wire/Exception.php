@@ -18,5 +18,5 @@ namespace Amqp\Wire;
 
 class Exception extends \Exception
 {
-	//
+    //
 }

@@ -21,32 +21,32 @@ use Amqp\Protocol\MethodNames;
 use Amqp\Wire\Reader;
 
 abstract class AbstractChannel
-{	
-	protected $_connection;
-	protected $_channelId;
-	
-	/**
-	 * Lower level queue for frames
-	 * @var array
-	 */
-	public $_frameQueue = array();
-	
-	/**
-	* Higher level queue for frames
-	* @var array
-	*/	
-	public $_methodQueue = array();
-	
-	protected $_autoDecode = false;
-	
+{    
+    protected $_connection;
+    protected $_channelId;
+    
+    /**
+     * Lower level queue for frames
+     * @var array
+     */
+    public $_frameQueue = array();
+    
+    /**
+    * Higher level queue for frames
+    * @var array
+    */    
+    public $_methodQueue = array();
+    
+    protected $_autoDecode = false;
+    
     private $_contentMethods = array(
-    	MethodNames::METHOD_CHANNEL_BASIC_DELIVER,
-    	MethodNames::METHOD_CHANNEL_BASIC_GET_OK,
+        MethodNames::METHOD_CHANNEL_BASIC_DELIVER,
+        MethodNames::METHOD_CHANNEL_BASIC_GET_OK,
     );
     
     private $_closeMethods = array(
-    	MethodNames::METHOD_CONNECTION_CLOSE,
-    	MethodNames::METHOD_CHANNEL_CLOSE,
+        MethodNames::METHOD_CONNECTION_CLOSE,
+        MethodNames::METHOD_CHANNEL_CLOSE,
     );
     
     /**
@@ -66,8 +66,8 @@ abstract class AbstractChannel
     function dispatch($methodSig, $args, $content)
     {
         if(!array_key_exists($methodSig, $this->_methodMap)) {
-			throw new ChannelException(sprintf("Unknown AMQP method %s", $methodSig));
-		}
+            throw new ChannelException(sprintf("Unknown AMQP method %s", $methodSig));
+        }
         
         $amqpMethod = $this->_methodMap[$methodSig];
         if (null == $content) {
@@ -80,7 +80,7 @@ abstract class AbstractChannel
     function nextFrame()
     {
         if (count($this->_frameQueue) > 0) {
-			return array_pop($this->_frameQueue);
+            return array_pop($this->_frameQueue);
         }
         
         return $this->_connection->waitChannel($this->_channelId);
@@ -98,7 +98,7 @@ abstract class AbstractChannel
         $payload = $frm[1];
         
         if ($frameType != 2) {
-			throw new ChannelException("Expected Content header");
+            throw new ChannelException("Expected Content header");
         }
 
         $payloadReader = new Reader(substr($payload, 0, 12));
@@ -118,7 +118,7 @@ abstract class AbstractChannel
             $payload = $frm[1];
             
             if ($frameType != 3) {
-				throw new ChannelException(sprintf("Expected Content body, received frame type %s", $frame_type));
+                throw new ChannelException(sprintf("Expected Content body, received frame type %s", $frame_type));
             }
             
             $bodyParts[] = $payload;
@@ -185,7 +185,7 @@ abstract class AbstractChannel
             array_push($this->methodQueue, array($methodSig, $args, $content));
             
             if ($this->_timedOut()) {
-            	throw new Exception('Timed out');
+                throw new Exception('Timed out');
             }
         }
     }

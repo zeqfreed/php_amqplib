@@ -23,7 +23,7 @@ use Amqp\Wire\Reader;
  * Subclasses should override the 'properties' attribute.
  */
 class GenericContent
-{	
+{    
     protected $_basePropTypes = array(
         "dummy" => "shortStr"
     );
@@ -89,7 +89,7 @@ class GenericContent
         $d = array();
         
         foreach ($this->_propTypes as $key => $propType) {
-			if ($shift == 0) {
+            if ($shift == 0) {
                 if(!$flags) {
                     break;
                 }

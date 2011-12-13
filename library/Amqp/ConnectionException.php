@@ -19,5 +19,5 @@ use Amqp\Exception;
 
 class ConnectionException extends Exception
 {
-	//
+    //
 }

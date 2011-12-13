@@ -19,5 +19,5 @@ use Amqp\Exception;
 
 class ChannelException extends Exception
 {
-	//
+    //
 }

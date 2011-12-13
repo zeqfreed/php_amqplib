@@ -19,7 +19,7 @@ use Amqp\Wire\GenericContent;
 
 class Message extends GenericContent
 {
-	protected $_basePropTypes = array(
+    protected $_basePropTypes = array(
         "content_type" => "shortStr",
         "content_encoding" => "shortStr",
         "application_headers" => "table",
@@ -34,13 +34,13 @@ class Message extends GenericContent
         "user_id" => "shortStr",
         "app_id" => "shortStr",
         "cluster_id" => "shortStr"
-	);
-	
-	public $body = '';
+    );
+    
+    public $body = '';
 
-	public function __construct($body = '', $properties = null)
-	{
-		$this->body = $body;
-		parent::__construct($properties, $this->_basePropTypes);
-	}
+    public function __construct($body = '', $properties = null)
+    {
+        $this->body = $body;
+        parent::__construct($properties, $this->_basePropTypes);
+    }
 }

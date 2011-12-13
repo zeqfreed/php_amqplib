@@ -22,13 +22,13 @@ use Amqp\Wire\BufferedInput;
 
 class Reader
 {
-	private $_str;
-	private $_sock;
-	private $_offset;
-	private $_bitCount;
-	private $_is64bit;
-	private $_bufferReadTimeout;
-	
+    private $_str;
+    private $_sock;
+    private $_offset;
+    private $_bitCount;
+    private $_is64bit;
+    private $_bufferReadTimeout;
+    
     public function __construct($str, $sock = null)
     {
         $this->_str = $str;
@@ -59,7 +59,7 @@ class Reader
     public function close()
     {
         if ($this->_sock) {
-			$this->_sock->close();
+            $this->_sock->close();
         }
     }
 
@@ -73,19 +73,19 @@ class Reader
     private function rawRead($n)
     {
         if (null !== $this->_sock) {
-			$res = '';
-			$read = 0;
+            $res = '';
+            $read = 0;
             
             $start = time();
             while ($read < $n
-            	   && !feof($this->_sock->getSock())
-            	   && (false !== ($buf = fread($this->_sock->getSock(), $n - $read)))) {
-            	// Check for timeout
-            	$info = stream_get_meta_data($this->_sock->getSock());
-            	if ($info['timed_out']) {
-            		throw new TimedOutException();
-            	}
-            	
+                   && !feof($this->_sock->getSock())
+                   && (false !== ($buf = fread($this->_sock->getSock(), $n - $read)))) {
+                // Check for timeout
+                $info = stream_get_meta_data($this->_sock->getSock());
+                if ($info['timed_out']) {
+                    throw new TimedOutException();
+                }
+                
                 if ('' == $buf) {
                     usleep(100);
                 } else {
@@ -97,7 +97,7 @@ class Reader
             }
 
             if(strlen($res) != $n) {
-				throw new Exception(sprintf("Error reading data. Recevived %d instead of expected %d bytes", strlen($res), $n));
+                throw new Exception(sprintf("Error reading data. Recevived %d instead of expected %d bytes", strlen($res), $n));
             }
             $this->_offset += $n;
             

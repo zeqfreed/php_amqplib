@@ -19,9 +19,9 @@ use Amqp\Wire\Exception;
 
 class Decimal
 {
-	private $_e;
-	private $_n;
-	
+    private $_e;
+    private $_n;
+    
     public function __construct($n, $e)
     {
         if ($e < 0) {

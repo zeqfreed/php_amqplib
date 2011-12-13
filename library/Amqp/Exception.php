@@ -19,30 +19,30 @@ use Amqp\Protocol\MethodNames;
 
 class Exception extends \Exception
 {
-	public $amqpReplyCode;
-	public $amqpReplyText;
-	public $amqpMethodSig;
-	
-	public function __construct($replyCode, $replyText = null, $methodSig = null)
-	{
-		parent::__construct();
-	
-		$this->amqpReplyCode = $replyCode;
-		$this->amqpReplyText = $replyText;
-		$this->amqpMethodSig = $methodSig;
-	
-		$mn = MethodNames::map($methodSig);
-		
-		$this->args = array(
-			$replyCode,
-			$replyText,
-			$methodSig,
-			$mn
-		);
-	}
+    public $amqpReplyCode;
+    public $amqpReplyText;
+    public $amqpMethodSig;
+    
+    public function __construct($replyCode, $replyText = null, $methodSig = null)
+    {
+        parent::__construct();
+    
+        $this->amqpReplyCode = $replyCode;
+        $this->amqpReplyText = $replyText;
+        $this->amqpMethodSig = $methodSig;
+    
+        $mn = MethodNames::map($methodSig);
+        
+        $this->args = array(
+            $replyCode,
+            $replyText,
+            $methodSig,
+            $mn
+        );
+    }
 }
 
 class ConnectionException extends Exception
 {
-	//
+    //
 }

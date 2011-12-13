@@ -19,9 +19,9 @@ use Amqp\Wire\Exception;;
 
 class Writer
 {
-	private $_out = '';
-	private $_bits = array();
-	private $_bitCount = 0;
+    private $_out = '';
+    private $_bits = array();
+    private $_bitCount = 0;
 
     private static function chrbytesplit($x, $bytes)
     {
@@ -35,9 +35,9 @@ class Writer
     private static function bytesplit($x, $bytes)
     {
         if (is_int($x)) {
-			if ($x < 0) {
-				$x = sprintf("%u", $x);
-			}
+            if ($x < 0) {
+                $x = sprintf("%u", $x);
+            }
         }
                 
         $res = array();
@@ -48,7 +48,7 @@ class Writer
         }
         
         if ($x != 0) {
-			throw new Exception("Value too big to split");
+            throw new Exception("Value too big to split");
         }
         
         return $res;
@@ -96,7 +96,7 @@ class Writer
         if ($shift == 0) {
             $last = 0;
         } else {
-			$last = array_pop($this->_bits);
+            $last = array_pop($this->_bits);
         }
         
         $last |= ($b << $shift);

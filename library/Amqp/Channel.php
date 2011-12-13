@@ -60,7 +60,7 @@ class Channel extends AbstractChannel
     public function __construct($connection, $channelId = null, $autoDecode = true)
     {
         if (null == $channelId) {
-			$channelId = $connection->getFreeChannelId();
+            $channelId = $connection->getFreeChannelId();
         }
 
         parent::__construct($connection, $channelId);
@@ -108,8 +108,8 @@ class Channel extends AbstractChannel
         $this->sendMethodFrame(array(20, 40), $args);
         
         $result = $this->wait(array(
-        	MethodNames::METHOD_CHANNEL_CLOSE_OK,
-		));
+            MethodNames::METHOD_CHANNEL_CLOSE_OK,
+        ));
         
         return $result;
     }
@@ -146,8 +146,8 @@ class Channel extends AbstractChannel
         $this->sendMethodFrame(array(20, 20), $args);
         
         $result = $this->wait(array(
-        	MethodNames::METHOD_CHANNEL_FLOW_OK,
-		));
+            MethodNames::METHOD_CHANNEL_FLOW_OK,
+        ));
         
         return $result;
     }
@@ -181,8 +181,8 @@ class Channel extends AbstractChannel
         $this->sendMethodFrame(array(20, 10), $args);
         
         $result = $this->wait(array(
-        	MethodNames::METHOD_CHANNEL_OPEN_OK,
-		));
+            MethodNames::METHOD_CHANNEL_OPEN_OK,
+        ));
         
         return $result;
     }
@@ -196,7 +196,7 @@ class Channel extends AbstractChannel
      * request an access ticket
      */
     public function accessRequest($realm, $exclusive = false, $passive = false,
-     							  $active = false, $write = false, $read = false)
+                                   $active = false, $write = false, $read = false)
     {
         $args = new Writer();
         $args->writeShortStr($realm);
@@ -208,8 +208,8 @@ class Channel extends AbstractChannel
         $this->sendMethodFrame(array(30, 10), $args);
         
         $result = $this->wait(array(
-        	MethodNames::METHOD_CHANNEL_ACCESS_REQUEST_OK,
-		));
+            MethodNames::METHOD_CHANNEL_ACCESS_REQUEST_OK,
+        ));
         
         return $result;
     }
@@ -232,7 +232,7 @@ class Channel extends AbstractChannel
                                     $arguments = null, $ticket = null)
     {
         if (null == $arguments) {
-			$arguments = array();
+            $arguments = array();
         }
         
         $args = new Writer();
@@ -254,8 +254,8 @@ class Channel extends AbstractChannel
 
         if (!$nowait) {
             $result = $this->wait(array(
-            	MethodNames::METHOD_CHANNEL_EXCHANGE_DECLARE_OK,
-			));
+                MethodNames::METHOD_CHANNEL_EXCHANGE_DECLARE_OK,
+            ));
             
             return $result;
         }
@@ -266,7 +266,7 @@ class Channel extends AbstractChannel
      */
     protected function exchangeDeclareOk($args)
     {
-    	//
+        //
     }
 
     /**
@@ -288,8 +288,8 @@ class Channel extends AbstractChannel
 
         if (!$nowait) {
             $result = $this->wait(array(
-            	MethodNames::METHOD_CHANNEL_EXCHANGE_DELETE_OK,
-			));
+                MethodNames::METHOD_CHANNEL_EXCHANGE_DELETE_OK,
+            ));
             
             return $result;
         }
@@ -300,7 +300,7 @@ class Channel extends AbstractChannel
      */
     protected function exchangeDeleteOk($args)
     {
-    	//
+        //
     }
 
 
@@ -310,7 +310,7 @@ class Channel extends AbstractChannel
     public function queueBind($queue, $exchange, $routingKey = '', $nowait = false, $arguments = null, $ticket = null)
     {
         if (null == $arguments) {
-			$arguments = array();
+            $arguments = array();
         }
 
         $args = new Writer();
@@ -328,8 +328,8 @@ class Channel extends AbstractChannel
 
         if (!$nowait) {
             $result = $this->wait(array(
-            	MethodNames::METHOD_CHANNEL_QUEUE_BIND_OK,
-			));
+                MethodNames::METHOD_CHANNEL_QUEUE_BIND_OK,
+            ));
             
             return $result;
         }
@@ -340,7 +340,7 @@ class Channel extends AbstractChannel
      */
     protected function queueBindOk($args)
     {
-    	//
+        //
     }
 
     /**
@@ -350,7 +350,7 @@ class Channel extends AbstractChannel
                                  $autoDelete = true, $nowait = false, $arguments = null, $ticket = null)
     {
         if (null == $arguments) {
-			$arguments = array();
+            $arguments = array();
         }
 
         $args = new Writer();
@@ -369,10 +369,10 @@ class Channel extends AbstractChannel
         $args->writeTable($arguments);
         $this->sendMethodFrame(array(50, 10), $args);
 
-		if (!$nowait) {
+        if (!$nowait) {
             $result = $this->wait(array(
-            	MethodNames::METHOD_CHANNEL_QUEUE_DECLARE_OK,
-			));
+                MethodNames::METHOD_CHANNEL_QUEUE_DECLARE_OK,
+            ));
             
             return $result;
         }
@@ -410,11 +410,11 @@ class Channel extends AbstractChannel
         $this->sendMethodFrame(array(50, 40), $args);
         
         if (!$nowait) {
-        	$result = $this->wait(array(
-        		MethodNames::METHOD_CHANNEL_QUEUE_DELETE_OK,
-        	));
+            $result = $this->wait(array(
+                MethodNames::METHOD_CHANNEL_QUEUE_DELETE_OK,
+            ));
         
-        	return $result;
+            return $result;
         }
     }
 
@@ -444,11 +444,11 @@ class Channel extends AbstractChannel
         $this->sendMethodFrame(array(50, 30), $args);
         
         if (!$nowait) {
-        	$result = $this->wait(array(
-        		MethodNames::METHOD_CHANNEL_QUEUE_PURGE_OK,
-        	));
+            $result = $this->wait(array(
+                MethodNames::METHOD_CHANNEL_QUEUE_PURGE_OK,
+            ));
         
-        	return $result;
+            return $result;
         }
     }
 
@@ -482,11 +482,11 @@ class Channel extends AbstractChannel
         $this->sendMethodFrame(array(60, 30), $args);
         
         if (!$nowait) {
-        	$result = $this->wait(array(
-        		MethodNames::METHOD_CHANNEL_BASIC_CANCEL_OK,
-        	));
+            $result = $this->wait(array(
+                MethodNames::METHOD_CHANNEL_BASIC_CANCEL_OK,
+            ));
         
-        	return $result;
+            return $result;
         }        
     }
 
@@ -506,7 +506,7 @@ class Channel extends AbstractChannel
                                  $noAck = false, $exclusive = false, $nowait = false,
                                  $callback = null, $ticket = null)
     {
-		$args = new Writer();
+        $args = new Writer();
         
         if(null !== $ticket) {
             $args->writeShort($ticket);
@@ -523,12 +523,12 @@ class Channel extends AbstractChannel
         $this->sendMethodFrame(array(60, 20), $args);
         
         if (!$nowait) {
-        	$consumerTag = $this->wait(array(
-        		MethodNames::METHOD_CHANNEL_BASIC_CONSUME_OK,
-        	));
+            $consumerTag = $this->wait(array(
+                MethodNames::METHOD_CHANNEL_BASIC_CONSUME_OK,
+            ));
         }
-        	
-		$this->_callbacks[$consumerTag] = $callback;
+            
+        $this->_callbacks[$consumerTag] = $callback;
         return $consumerTag;        
     }
 
@@ -567,7 +567,7 @@ class Channel extends AbstractChannel
         }
         
         if (null !== $func) {
-			call_user_func($func, $msg);
+            call_user_func($func, $msg);
         }
     }
 
@@ -588,9 +588,9 @@ class Channel extends AbstractChannel
         $args->writeBit($noAck);
         $this->sendMethodFrame(array(60, 70), $args);
         $result = $this->wait(array(
-        	MethodNames::METHOD_CHANNEL_BASIC_GET_OK,
-        	MethodNames::METHOD_CHANNEL_BASIC_GET_EMPTY,
-		));
+            MethodNames::METHOD_CHANNEL_BASIC_GET_OK,
+            MethodNames::METHOD_CHANNEL_BASIC_GET_EMPTY,
+        ));
         
         return $result;
     }
@@ -658,8 +658,8 @@ class Channel extends AbstractChannel
         $args->writeBit($aGlobal);
         $this->sendMethodFrame(array(60, 10), $args);
         $result = $this->wait(array(
-        	MethodNames::METHOD_CHANNEL_BASIC_QOS_OK,
-		));
+            MethodNames::METHOD_CHANNEL_BASIC_QOS_OK,
+        ));
         
         return $result;
     }
@@ -711,8 +711,8 @@ class Channel extends AbstractChannel
         $this->sendMethodFrame(array(90, 20));
         
         $result = $this->wait(array(
-        	MethodNames::METHOD_CHANNEL_TX_COMMIT_OK,
-		));
+            MethodNames::METHOD_CHANNEL_TX_COMMIT_OK,
+        ));
         
         return $result;
     }
@@ -732,8 +732,8 @@ class Channel extends AbstractChannel
         $this->sendMethodFrame(array(90, 30));
         
         $result = $this->wait(array(
-        	MethodNames::METHOD_CHANNEL_TX_ROLLBACK_OK,
-		));
+            MethodNames::METHOD_CHANNEL_TX_ROLLBACK_OK,
+        ));
         
         return $result;
     }
@@ -753,8 +753,8 @@ class Channel extends AbstractChannel
         $this->sendMethodFrame(array(90, 10));
         
         $result = $this->wait(array(
-        	MethodNames::METHOD_CHANNEL_TX_SELECT_OK,
-		));
+            MethodNames::METHOD_CHANNEL_TX_SELECT_OK,
+        ));
         
         return $result;
     }

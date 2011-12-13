@@ -19,5 +19,5 @@ use Amqp\Wire\Exception;
 
 class TimedOutException extends Exception
 {
-	//
+    //
 }
