@@ -183,10 +183,6 @@ abstract class AbstractChannel
             }
             
             array_push($this->methodQueue, array($methodSig, $args, $content));
-            
-            if ($this->_timedOut()) {
-                throw new Exception('Timed out');
-            }
         }
     }
 }
