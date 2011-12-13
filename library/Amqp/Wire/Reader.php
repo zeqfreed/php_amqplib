@@ -1,9 +1,9 @@
 <?php
 
 /**
- * 
+ *
  * AMQP client library (protocol version 0.8)
- * 
+ *
  * @source https://github.com/zeqfreed/php_amqplib
  * @author Artem Kozlov <zeqfreed@gmail.com>
  * @version 0.1
@@ -11,7 +11,7 @@
  * This code is a rewrite of Simple AMQP library:
  * http://code.google.com/p/php-amqplib/
  * Vadim Zaliva <lord@crocodile.org>
- * 
+ *
  */
 
 namespace Amqp\Wire;
@@ -28,17 +28,17 @@ class Reader
     private $_bitCount;
     private $_is64bit;
     private $_bufferReadTimeout;
-    
+
     public function __construct($str, $sock = null)
     {
         $this->_str = $str;
-        
+
         if (null != $sock) {
             $this->_sock = new BufferedInput($sock);
         } else {
             $this->_sock = null;
         }
-        
+
         $this->_offset = 0;
         $this->_bitCount = 0;
         $this->_bits = 0;
@@ -52,7 +52,7 @@ class Reader
         if(!function_exists("bcmul")) {
             throw new Exception("'bcmath' module required");
         }
-            
+
         $this->_bufferReadTimeout = 5; // seconds
     }
 
@@ -69,13 +69,13 @@ class Reader
         $this->_bits = 0;
         return $this->rawRead($n);
     }
-    
+
     private function rawRead($n)
     {
         if (null !== $this->_sock) {
             $res = '';
             $read = 0;
-            
+
             $start = time();
             while ($read < $n
                    && !feof($this->_sock->getSock())
@@ -85,13 +85,13 @@ class Reader
                 if ($info['timed_out']) {
                     throw new TimedOutException();
                 }
-                
+
                 if ('' == $buf) {
                     usleep(100);
                 } else {
-                    $start = time();                
+                    $start = time();
                 }
-                    
+
                 $read += strlen($buf);
                 $res .= $buf;
             }
@@ -100,17 +100,17 @@ class Reader
                 throw new Exception(sprintf("Error reading data. Recevived %d instead of expected %d bytes", strlen($res), $n));
             }
             $this->_offset += $n;
-            
+
         } else {
             if(strlen($this->_str) < $n) {
                 throw new Exception(sprintf("Error reading data. Requested %d bytes while string buffer has only %d", $n, strlen($this->str)));
             }
-            
+
             $res = substr($this->_str, 0, $n);
             $this->_str = substr($this->_str, $n);
             $this->_offset += $n;
         }
-        
+
         return $res;
     }
 
@@ -120,7 +120,7 @@ class Reader
             $this->_bits = ord($this->rawRead(1));
             $this->_bitCount = 8;
         }
-        
+
         $result = ($this->_bits & 1) == 1;
         $this->_bits >>= 1;
         $this->_bitCount -= 1;
@@ -157,7 +157,7 @@ class Reader
     public function readPhpInt()
     {
         list(,$res) = unpack('N', $this->rawRead(4));
-        
+
         if ($this->_is64bit) {
             $sres = sprintf ("%u", $res);
             return (int) $sres;
@@ -165,7 +165,7 @@ class Reader
             return $res;
         }
     }
-    
+
     // PHP does not have unsigned 32 bit int,
     // so we return it as a string
     public function readLong()
@@ -181,7 +181,7 @@ class Reader
     {
         $this->_bitCount = 0;
         $this->bits = 0;
-        
+
         // In PHP unpack('N') always return signed value,
         // on both 32 and 64 bit systems!
         list(,$res) = unpack('N', $this->rawRead(4));
@@ -201,7 +201,7 @@ class Reader
         // workaround signed/unsigned braindamage in php
         $hi = sprintf ("%u", $hi[1]);
         $lo = sprintf ("%u", $lo[1]);
- 
+
         return bcadd(bcmul($hi, "4294967296"), $lo);
     }
 
@@ -216,7 +216,7 @@ class Reader
         list(,$slen) = unpack('C', $this->rawRead(1));
         return $this->rawRead($slen);
     }
-    
+
     /**
      * Read a string that's up to 2**32 bytes, the encoding
      * isn't specified in the AMQP spec, so just return it as
@@ -230,10 +230,10 @@ class Reader
         if ($slen < 0) {
             throw new Exception("String is longer than supported on this platform");
         }
-        
+
         return $this->rawRead($slen);
     }
-    
+
     /**
      * Read and AMQP timestamp, which is a 64-bit integer representing
      * seconds since the Unix epoch in 1-second resolution.
@@ -251,19 +251,19 @@ class Reader
     {
         $this->_bitCount = 0;
         $this->_bits = 0;
-        
+
         $tlen = $this->readPhpInt();
         if ($tlen < 0) {
             throw new Exception("Table is longer than supported");
         }
-        
+
         $tableData = new Reader($this->rawRead($tlen));
         $result = array();
-        
+
         while ($tableData->tell() < $tlen) {
             $name = $tableData->readShortStr();
             $ftype = $tableData->rawRead(1);
-            
+
             if ('S' == $ftype) {
                 $val = $tableData->readLongStr();
             } else if ('I' == $ftype) {
@@ -279,13 +279,13 @@ class Reader
             } else {
                 $val = null;
             }
-            
+
             $result[$name] = array($ftype, $val);
         }
-        
+
         return $result;
     }
-    
+
     protected function tell()
     {
         return $this->_offset;
