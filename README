@@ -1,0 +1,16 @@
+AMQP client library (protocol version 0.8)
+https://github.com/zeqfreed/php_amqplib
+
+This library is a rewrite of Simple AMQP library by Vadim Zaliva
+(http://code.google.com/p/php-amqplib/).
+
+Class layout is changed to be compatible with PSR-0 compliant class
+loaders 
+(https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md)  
+and code style should conform to Zend Coding Standard 
+(http://framework.zend.com/manual/en/coding-standard.html).
+
+The library is likely to evolve further in direction of more clean code
+with the use of modern techniques of professional PHP.
+
+The code is published as it, without any warranties whatsoever.
